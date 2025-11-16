@@ -121,6 +121,40 @@ endif()
 if(WW3D2_SOURCES)
     add_library(WW3D2 STATIC ${WW3D2_SOURCES})
     target_include_directories(WW3D2 PUBLIC ${GENERALS_INCLUDE_DIRS})
+
+    # Add Vulkan support if enabled
+    if(USE_VULKAN AND Vulkan_FOUND)
+        target_include_directories(WW3D2 PUBLIC ${Vulkan_INCLUDE_DIRS})
+        target_link_libraries(WW3D2 PUBLIC ${Vulkan_LIBRARIES})
+
+        # Add shader output directory to include path
+        target_include_directories(WW3D2 PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+
+        # Compile Vulkan shaders
+        include(${CMAKE_SOURCE_DIR}/cmake/CompileShaders.cmake)
+
+        # Find Python3 for shader header generation
+        find_package(Python3 COMPONENTS Interpreter)
+        if(Python3_FOUND)
+            set(SHADER_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+            file(MAKE_DIRECTORY ${SHADER_OUTPUT_DIR})
+
+            # Define shaders to compile
+            set(BASIC_VERT_SHADER ${CMAKE_CURRENT_SOURCE_DIR}/Shaders/Vulkan/basic.vert.glsl)
+            set(BASIC_FRAG_SHADER ${CMAKE_CURRENT_SOURCE_DIR}/Shaders/Vulkan/basic.frag.glsl)
+
+            set(BASIC_VERT_HEADER ${SHADER_OUTPUT_DIR}/basic_vert.spv.h)
+            set(BASIC_FRAG_HEADER ${SHADER_OUTPUT_DIR}/basic_frag.spv.h)
+
+            # Compile shaders
+            compile_shader(WW3D2 ${BASIC_VERT_SHADER} ${BASIC_VERT_HEADER} basic_vert_spv)
+            compile_shader(WW3D2 ${BASIC_FRAG_SHADER} ${BASIC_FRAG_HEADER} basic_frag_spv)
+
+            message(STATUS "Vulkan shaders will be compiled to ${SHADER_OUTPUT_DIR}")
+        else()
+            message(WARNING "Python3 not found - cannot generate shader headers")
+        endif()
+    endif()
 endif()
 
 # Create compression libraries
