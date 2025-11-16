@@ -16,6 +16,11 @@ option(PERMISSIVE_BUILD "Allow compilation to continue despite missing dependenc
 option(USE_VULKAN "Use Vulkan rendering instead of DirectX 8" ON)
 option(USE_DX8 "Use DirectX 8 rendering (Windows only)" OFF)
 
+# Display enhancement options
+option(ENABLE_60FPS "Enable 60 FPS support (default 30 FPS legacy)" ON)
+option(ENABLE_ULTRAWIDE "Enable ultra-wide display support (21:9, 32:9)" ON)
+option(ENABLE_UNCAPPED_FPS "Allow uncapped frame rate" ON)
+
 # Platform checks
 if(NOT WIN32 AND NOT UNIX)
     message(WARNING "This game was originally developed for Windows. Linux/Unix builds are experimental.")
@@ -109,6 +114,31 @@ if(USE_VULKAN)
             message(FATAL_ERROR "Vulkan required but not found")
         endif()
     endif()
+endif()
+
+# Display enhancements
+if(ENABLE_60FPS)
+    add_compile_definitions(ENABLE_60FPS=1)
+    message(STATUS "60 FPS support: ENABLED")
+else()
+    add_compile_definitions(ENABLE_60FPS=0)
+    message(STATUS "60 FPS support: DISABLED (legacy 30 FPS)")
+endif()
+
+if(ENABLE_ULTRAWIDE)
+    add_compile_definitions(ENABLE_ULTRAWIDE=1)
+    message(STATUS "Ultra-wide support: ENABLED")
+else()
+    add_compile_definitions(ENABLE_ULTRAWIDE=0)
+    message(STATUS "Ultra-wide support: DISABLED")
+endif()
+
+if(ENABLE_UNCAPPED_FPS)
+    add_compile_definitions(ENABLE_UNCAPPED_FPS=1)
+    message(STATUS "Uncapped FPS: ENABLED")
+else()
+    add_compile_definitions(ENABLE_UNCAPPED_FPS=0)
+    message(STATUS "Uncapped FPS: DISABLED")
 endif()
 
 # Check for required dependencies

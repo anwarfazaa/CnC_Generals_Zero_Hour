@@ -52,6 +52,7 @@
 
 // ----------------------------------------------------------------------------------------------
 #include "Lib/BaseType.h"
+#include "Common/DisplayConfig.h"  // Enhanced 60 FPS and ultra-wide support
 
 // ----------------------------------------------------------------------------------------------
 #if defined(_INTERNAL) || defined(_DEBUG) || defined(_PLAYTEST)
@@ -63,7 +64,7 @@
 // ----------------------------------------------------------------------------------------------
 enum
 {
-	LOGICFRAMES_PER_SECOND = 30,
+	LOGICFRAMES_PER_SECOND = CONFIG_LOGICFRAMES_PER_SECOND,  // 60 FPS with ENABLE_60FPS, 30 FPS legacy
 	MSEC_PER_SECOND = 1000
 };
 const Real LOGICFRAMES_PER_MSEC_REAL = (((Real)LOGICFRAMES_PER_SECOND) / ((Real)MSEC_PER_SECOND));

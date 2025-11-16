@@ -33,8 +33,9 @@
 
 #include "Common/SubsystemInterface.h"
 #include "Common/GameType.h"
+#include "Common/DisplayConfig.h"
 
-#define DEFAULT_MAX_FPS		45
+#define DEFAULT_MAX_FPS		CONFIG_DEFAULT_MAX_FPS  // 60 FPS with ENABLE_60FPS, 45 FPS legacy
 
 // forward declarations
 class AudioManager;
