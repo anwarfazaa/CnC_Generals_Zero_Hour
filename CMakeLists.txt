@@ -13,6 +13,8 @@ option(BUILD_GENERALS "Build C&C Generals" ON)
 option(BUILD_GENERALSZH "Build C&C Generals Zero Hour" ON)
 option(BUILD_TOOLS "Build development tools" OFF)
 option(PERMISSIVE_BUILD "Allow compilation to continue despite missing dependencies" ON)
+option(USE_VULKAN "Use Vulkan rendering instead of DirectX 8" ON)
+option(USE_DX8 "Use DirectX 8 rendering (Windows only)" OFF)
 
 # Platform checks
 if(NOT WIN32 AND NOT UNIX)
@@ -95,6 +97,20 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# Vulkan support
+if(USE_VULKAN)
+    find_package(Vulkan)
+    if(Vulkan_FOUND)
+        message(STATUS "Vulkan found: ${Vulkan_LIBRARY}")
+        add_compile_definitions(USE_VULKAN=1)
+    else()
+        message(WARNING "Vulkan not found. Install Vulkan SDK from https://vulkan.lunarg.com/")
+        if(NOT PERMISSIVE_BUILD)
+            message(FATAL_ERROR "Vulkan required but not found")
+        endif()
+    endif()
+endif()
+
 # Check for required dependencies
 set(MISSING_DEPS "")
 
@@ -152,4 +168,15 @@ message(STATUS "  Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "  Build Generals: ${BUILD_GENERALS}")
 message(STATUS "  Build Zero Hour: ${BUILD_GENERALSZH}")
 message(STATUS "  Build Tools: ${BUILD_TOOLS}")
+message(STATUS "  Rendering Backend:")
+if(USE_VULKAN AND Vulkan_FOUND)
+    message(STATUS "    - Vulkan: YES (${Vulkan_VERSION})")
+else()
+    message(STATUS "    - Vulkan: NO")
+endif()
+if(USE_DX8 AND WIN32)
+    message(STATUS "    - DirectX 8: YES")
+else()
+    message(STATUS "    - DirectX 8: NO")
+endif()
 message(STATUS "=================================================================")
