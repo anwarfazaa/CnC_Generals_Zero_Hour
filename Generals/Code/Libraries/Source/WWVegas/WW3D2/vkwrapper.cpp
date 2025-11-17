@@ -75,6 +75,12 @@ VK_FUNC(vkQueuePresentKHR);
 VK_FUNC(vkQueueWaitIdle);
 VK_FUNC(vkDeviceWaitIdle);
 
+// Platform-specific surface functions
+#ifdef _WIN32
+VK_FUNC(vkCreateWin32SurfaceKHR);
+VK_FUNC(vkGetPhysicalDeviceWin32PresentationSupportKHR);
+#endif
+
 #undef VK_FUNC
 
 //=============================================================================

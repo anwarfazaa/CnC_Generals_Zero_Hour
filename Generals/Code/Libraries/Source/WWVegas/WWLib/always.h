@@ -90,10 +90,14 @@
 		extern void __cdecl operator delete[]	(void *, const char *, int);
 
 		// additional overloads for 'placement new'
-		//inline void* __cdecl operator new							(size_t s, void *p) { return p; }
-		//inline void __cdecl operator delete						(void *, void *p)		{ }
-		inline void* __cdecl operator new[]						(size_t s, void *p) { return p; }
-		inline void __cdecl operator delete[]					(void *, void *p)		{ }
+		// NOTE: Modern MSVC (VS2019+) includes placement new in standard library
+		// These definitions conflict with <vcruntime_new.h> in VS2019+ and cause C2084 errors
+		#if _MSC_VER < 1920  // Only define for MSVC versions older than VS2019
+			//inline void* __cdecl operator new							(size_t s, void *p) { return p; }
+			//inline void __cdecl operator delete						(void *, void *p)		{ }
+			inline void* __cdecl operator new[]						(size_t s, void *p) { return p; }
+			inline void __cdecl operator delete[]					(void *, void *p)		{ }
+		#endif
 	#else
 		// Non-MSVC compilers don't use __cdecl for operators
 		extern void * operator new		(size_t size);

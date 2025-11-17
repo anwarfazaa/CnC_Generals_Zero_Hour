@@ -364,6 +364,32 @@ Solution: Install Vulkan SDK
 - Or build without Vulkan: build-windows.bat --no-vulkan
 ```
 
+**Problem:** Compilation errors "vkCreateInstance: identifier not found" or "HWND: undeclared identifier"
+```
+Solution: Vulkan SDK not installed
+- These errors indicate the Vulkan SDK headers are missing
+- Install Vulkan SDK from https://vulkan.lunarg.com/
+- Make sure to restart your command prompt/IDE after installation
+- Or build without Vulkan: build-windows.bat --no-vulkan
+- CMake will automatically disable Vulkan if SDK is not found
+```
+
+**Problem:** "Cannot open include file: 'shaders/basic_vert.spv.h'"
+```
+Solution: Shader compilation failed
+- Requires Vulkan SDK with glslc or glslangValidator
+- Install Vulkan SDK completely (not just headers)
+- Or build without Vulkan: build-windows.bat --no-vulkan
+```
+
+**Problem:** "operator new[] already has a body" (C2084 error)
+```
+Solution: Fixed in latest version
+- This was a compatibility issue with Visual Studio 2022
+- Pull latest changes: git pull origin main
+- The placement new operators are now conditionally compiled
+```
+
 **Problem:** Build fails with linker errors
 ```
 Solution: Missing proprietary dependencies

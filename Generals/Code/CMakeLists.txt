@@ -58,6 +58,18 @@ file(GLOB_RECURSE WW3D2_SOURCES
     Libraries/Source/WWVegas/WW3D2/*.c
 )
 
+# Conditionally exclude rendering backend files based on build options
+if(USE_VULKAN)
+    # Exclude DirectX 8 files when using Vulkan
+    list(FILTER WW3D2_SOURCES EXCLUDE REGEX ".*dx8.*\\.(cpp|c)$")
+    message(STATUS "Excluded DirectX 8 files from build (using Vulkan)")
+else()
+    # Exclude Vulkan files when using DirectX 8
+    list(FILTER WW3D2_SOURCES EXCLUDE REGEX ".*vkwrapper.*\\.(cpp|c)$")
+    list(FILTER WW3D2_SOURCES EXCLUDE REGEX ".*renderbackend.*\\.(cpp|c)$")
+    message(STATUS "Excluded Vulkan files from build (using DirectX 8)")
+endif()
+
 # Collect source files for compression libraries
 file(GLOB_RECURSE ZLIB_SOURCES
     Libraries/Source/Compression/ZLib/*.c

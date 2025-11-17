@@ -16,6 +16,15 @@
 #include "vector4.h"
 #include "wwstring.h"
 
+// Platform-specific headers
+#ifdef _WIN32
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    #include <windows.h>
+    #define VK_USE_PLATFORM_WIN32_KHR
+#endif
+
 // Vulkan headers
 #define VK_NO_PROTOTYPES
 #include <vulkan/vulkan.h>
