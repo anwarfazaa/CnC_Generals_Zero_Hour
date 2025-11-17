@@ -22,11 +22,46 @@ If you wish to rebuild the source code and tools successfully you will need to f
 - LZH-Light (1.0) - (expected path `\Code\Libraries\Source\Compression\LZHCompress\CompLibSource` and `CompLibHeader`)
 
 
-## Compiling (Win32 Only)
+## Compiling
 
 To use the compiled binaries, you must own the game. The C&C Ultimate Collection is available for purchase on [EA App](https://www.ea.com/en-gb/games/command-and-conquer/command-and-conquer-the-ultimate-collection/buy/pc) or [Steam](https://store.steampowered.com/bundle/39394/Command__Conquer_The_Ultimate_Collection/).
 
-The quickest way to build all configurations in the project is to open `rts.dsw` in Microsoft Visual Studio C++ 6.0 (SP6 recommended for binary matching to Generals patch 1.08 and Zero Hour patch 1.04) and select Build -> Batch Build, then hit the “Rebuild All” button.
+### Modern CMake Build System (Recommended)
+
+A modern CMake build system has been added with support for Windows and Linux. This is the recommended way to build the game.
+
+**Quick Start:**
+
+**Windows:**
+```batch
+build-windows.bat
+```
+
+**Linux:**
+```bash
+chmod +x build-linux.sh
+./build-linux.sh
+```
+
+**Features:**
+- ✅ Cross-platform (Windows, Linux, macOS)
+- ✅ Modern C++17 compiler support
+- ✅ Vulkan rendering backend (replaces DirectX 8)
+- ✅ 60 FPS support (upgraded from 30 FPS)
+- ✅ Ultra-wide display support (21:9, 32:9)
+- ✅ Automatic dependency detection
+- ✅ Parallel building
+- ✅ Debug and Release configurations
+
+For detailed build instructions, see [BUILD.md](BUILD.md).
+
+For display enhancements (60 FPS, ultra-wide), see [60FPS_ULTRAWIDE.md](60FPS_ULTRAWIDE.md).
+
+For Vulkan rendering details, see [VULKAN_INTEGRATION.md](VULKAN_INTEGRATION.md).
+
+### Legacy Build (Win32 Only)
+
+The quickest way to build all configurations in the project is to open `rts.dsw` in Microsoft Visual Studio C++ 6.0 (SP6 recommended for binary matching to Generals patch 1.08 and Zero Hour patch 1.04) and select Build -> Batch Build, then hit the "Rebuild All" button.
 
 If you wish to compile the code under a modern version of Microsoft Visual Studio, you can convert the legacy project file to a modern MSVC solution by opening `rts.dsw` in Microsoft Visual Studio .NET 2003, and then opening the newly created project and solution file in MSVC 2015 or newer.
 
